@@ -48,6 +48,10 @@ public class MainActivity extends SherlockFragmentActivity {
 				AfternoonFragment.class, null);
 
 	}
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		finish();
+	}
 
 	public static class TabsAdapter extends FragmentPagerAdapter implements
 			ActionBar.TabListener, ViewPager.OnPageChangeListener {
