@@ -28,7 +28,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setTheme(R.style.Theme_Sherlock);
+		setTheme(R.style.Theme_Sherlock_Light_DarkActionBar);
 		super.onCreate(savedInstanceState);
 
 		mViewPager = new ViewPager(this);
@@ -36,10 +36,11 @@ public class MainActivity extends SherlockFragmentActivity {
 		setContentView(mViewPager);
 		ActionBar bar = getSupportActionBar();
 		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		bar.setDisplayShowTitleEnabled(false);
-		bar.setDisplayShowHomeEnabled(false);
+		bar.setDisplayShowTitleEnabled(true);
 
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
+		//mTabsAdapter.addTab(bar.newTab().setText("home"),
+		//HomeFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab().setText("morning"),
 				MorningFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab().setText("midday"),
@@ -50,7 +51,7 @@ public class MainActivity extends SherlockFragmentActivity {
 	}
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		finish();
+		onPause();
 	}
 
 	public static class TabsAdapter extends FragmentPagerAdapter implements
