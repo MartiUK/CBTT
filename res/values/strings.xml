@@ -1,69 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Capgemini Bus TT</string>
-    <string name="startText">Thank you for using this app, this is my first app I\'ve made and I hope it\'ll help you out during your day to day business. \n
-         Please drop by and give me any suggestions, I\'m currently in the CCM team on the 1st floor. \n \n * Please note that the last afternoon service (Departing 18:25 from Capgemini) is only available Monday to Friday.</string>
-    <string name="start">Start</string>
-    <string name="morning">Morning</string>
-    <string name="midday">Midday</string>
-    <string name="afternoon">Afternoon</string>
+		<string name="app_name">Capgemini Bus TT</string>
+		<string name="startText">Thank you for using this app, this is my first app I\'ve made and I hope it\'ll help you out during your day to day business. \n
+				Please drop by and give me any suggestions, I\'m currently in the CCM team on the 1st floor. \n \n * Please note that the last afternoon service (Departing 18:25 from Capgemini) is only available Monday to Friday.</string>
+		<string name="start">Start</string>
+		<string name="morning">Morning</string>
+		<string name="midday">Midday</string>
+		<string name="afternoon">Afternoon</string>
+		<string name="crash_toast_text">I crashed, but a report has been sent!</string>
+		<string name="serverVersion"></string>
 
-    <string-array name="morning_array">
-        <item id="@+id/sub_title">Departing From New Street Station</item>
-        <item>07:40</item>
-        <item>08:10</item>
-        <item>08:45</item>
-        <item>09:15</item>
-        <item id="@+id/sub_title">Departing From Radisson Blu Hotel</item>
-        <item>07:42</item>
-        <item>08:12</item>
-        <item>09:17</item>
-        <item id="@+id/sub_title">Departing From Crowne Plaza Hotel</item>
-        <item>07:45</item>
-        <item>08:15</item>
-        <item>09:20</item>
-        <item id="@+id/sub_title">Departing From Novotel</item>
-        <item>07:50</item>
-        <item>08:20</item>
-        <item>09:25</item>
-    </string-array>
-    <string-array name="midday_array">
-        <item id="@+id/sub_title">Departing From Capgemini </item>
-        <item>12:05</item>
-        <item>12:35</item>
-        <item>13:05</item>
-        <item>13:35</item>
-        <item id="@+id/sub_title">Departing From Bull Street</item>
-        <item>12:20</item>
-        <item>12:50</item>
-        <item>13:20</item>
-        <item>13:50</item>
-    </string-array>
-    <string-array name="afternoon_array">
-        <item id="@+id/sub_title">Departing Capgemini</item>
-        <item>16:35</item>
-        <item>17:05</item>
-        <item>17:40</item>
-        <item>18:25*</item>
-        <item id="@+id/sub_title">Departing New Street</item>
-        <item>16:45</item>
-        <item>17:15</item>
-        <item>17:50</item>
-        <item>18:35*</item>
-        <item id="@+id/sub_title">Departing From Radisson / Holiday Inn / Encore Ramada</item>
-        <item>16:50</item>
-        <item>17:20</item>
-        <item>17:55</item>
-        <item>18:40*</item>
-        <item id="@+id/sub_title">Departing From Crowne Plaza</item>
-        <item>17:22</item>
-        <item>17:57</item>
-        <item>18:42*</item>
-        <item id="@+id/sub_title">Arriving At Novotel / Mint Hotel</item>
-        <item>17:27</item>
-        <item>18:02</item>
-        <item>18:47*</item>
-    </string-array>
+		<string-array name="morning_array">
+				<item id="@+id/sub_title">Departing From New Street Station</item>
+				<item>07:40</item>
+				<item>08:10</item>
+				<item>08:45</item>
+				<item>09:15</item>
+				<item id="@+id/sub_title">Departing From Radisson Blu Hotel</item>
+				<item>07:42</item>
+				<item>08:12</item>
+				<item>09:17</item>
+				<item id="@+id/sub_title">Departing From Crowne Plaza Hotel</item>
+				<item>07:45</item>
+				<item>08:15</item>
+				<item>09:20</item>
+				<item id="@+id/sub_title">Departing From Novotel</item>
+				<item>07:50</item>
+				<item>08:20</item>
+				<item>09:25</item>
+		</string-array>
+		<string-array name="midday_array">
+				<item id="@+id/sub_title">Departing From Capgemini </item>
+				<item>12:05</item>
+				<item>12:35</item>
+				<item>13:05</item>
+				<item>13:35</item>
+				<item id="@+id/sub_title">Departing From Bull Street</item>
+				<item>12:20</item>
+				<item>12:50</item>
+				<item>13:20</item>
+				<item>13:50</item>
+		</string-array>
+		<string-array name="afternoon_array">
+				<item id="@+id/sub_title">Departing Capgemini</item>
+				<item>16:35</item>
+				<item>17:05</item>
+				<item>17:40</item>
+				<item>18:25*</item>
+				<item id="@+id/sub_title">Departing New Street</item>
+				<item>16:45</item>
+				<item>17:15</item>
+				<item>17:50</item>
+				<item>18:35*</item>
+				<item id="@+id/sub_title">Departing From Radisson / Holiday Inn / Encore Ramada</item>
+				<item>16:50</item>
+				<item>17:20</item>
+				<item>17:55</item>
+				<item>18:40*</item>
+				<item id="@+id/sub_title">Departing From Crowne Plaza</item>
+				<item>17:22</item>
+				<item>17:57</item>
+				<item>18:42*</item>
+				<item id="@+id/sub_title">Arriving At Novotel / Mint Hotel</item>
+				<item>17:27</item>
+				<item>18:02</item>
+				<item>18:47*</item>
+		</string-array>
 
 </resources>

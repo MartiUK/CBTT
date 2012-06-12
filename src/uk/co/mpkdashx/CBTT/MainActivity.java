@@ -1,35 +1,63 @@
 package uk.co.mpkdashx.CBTT;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
+
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.widget.Toast;
+
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class MainActivity.
  *
  * @author Martin Kemp <martin.kemp@capgemini.com>
- * @version 1.0
+ * @version 1.1
  * @since 10/05/2012
  */
 
 public class MainActivity extends SherlockFragmentActivity {
-
+	public static final String PREFS_NAME = "CBTTPrefsFile";
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
+	static ProgressDialog mProgressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setTheme(R.style.Theme_Sherlock_Light_DarkActionBar);
 		super.onCreate(savedInstanceState);
+
+		mProgressDialog = new ProgressDialog(MainActivity.this);
+		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		mProgressDialog.setMessage("Downloading...");
+		mProgressDialog.setIndeterminate(false);
+		mProgressDialog.setMax(100);
+		mProgressDialog.setCancelable(false);
 
 		mViewPager = new ViewPager(this);
 		mViewPager.setId(R.id.pager);
@@ -39,8 +67,8 @@ public class MainActivity extends SherlockFragmentActivity {
 		bar.setDisplayShowTitleEnabled(true);
 
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
-		//mTabsAdapter.addTab(bar.newTab().setText("home"),
-		//HomeFragment.class, null);
+		// mTabsAdapter.addTab(bar.newTab().setText("home"),
+		// HomeFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab().setText("morning"),
 				MorningFragment.class, null);
 		mTabsAdapter.addTab(bar.newTab().setText("midday"),
@@ -48,10 +76,140 @@ public class MainActivity extends SherlockFragmentActivity {
 		mTabsAdapter.addTab(bar.newTab().setText("afternoon"),
 				AfternoonFragment.class, null);
 
+		new checkForUpdateTask()
+				.execute("https://dl.dropbox.com/u/6138999/CBTTver.txt");
 	}
+
+	public class checkForUpdateTask extends AsyncTask<String, Void, Void> {
+
+		protected Void doInBackground(String... urls) {
+			String serverVersion = null;
+			String versionName = null;
+			InputStream is = null;
+			try {
+				is = new URL(urls[0]).openStream();
+				BufferedReader in = new BufferedReader(
+						new InputStreamReader(is));
+				serverVersion = in.readLine();
+				in.close();
+				// We need an Editor object to make preference changes.
+				// All objects are from android.context.Context
+				SharedPreferences settings = getSharedPreferences(PREFS_NAME,
+						MODE_PRIVATE);
+				SharedPreferences.Editor editor = settings.edit();
+				editor.putString("serverVersion", serverVersion.toString());
+				editor.commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				Log.e("Error Saving Server Version Name: ", e.getMessage(), e);
+			}
+			try {
+				versionName = getPackageManager().getPackageInfo(
+						getPackageName(), 0).versionName;
+			} catch (NameNotFoundException e) {
+				CharSequence text = "Couldn't get latest version info, please try again later";
+				int duration = Toast.LENGTH_LONG;
+				Toast updateErrorToast = Toast.makeText(
+						getApplicationContext(), text, duration);
+				updateErrorToast.show();
+				Log.e("Error Getting Current Version Name: ", e.getMessage(), e);
+			}
+
+			if (serverVersion.equals(versionName)) {
+			} else {
+				DialogFragment newFragment = UpdateDialog.newInstance(0);
+				newFragment.show(getSupportFragmentManager(), "title");
+			}
+			return null;
+		}
+	}
+
+	public static class UpdateDialog extends DialogFragment {
+		static UpdateDialog newInstance(int title) {
+			UpdateDialog frag = new UpdateDialog();
+			Bundle args = new Bundle();
+			args.putInt("Update Available", title);
+			frag.setArguments(args);
+			return frag;
+
+		}
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+					.setMessage(
+							"A new update is available, do you want to update?")
+					.setPositiveButton("Yes",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+
+									SharedPreferences settings = getActivity()
+											.getSharedPreferences(PREFS_NAME, 0);
+									String theServerVersion = settings
+											.getString("serverVersion", null);
+									try {
+										StartDownloadUpdate sDownloadUpdate = new StartDownloadUpdate();
+
+										Uri.Builder b = Uri.parse(
+												"http://dl.dropbox.com/u/6138999/CapgeminiBusTimetable_"
+														+ theServerVersion
+														+ ".apk").buildUpon();
+
+										String url = b.build().toString();
+
+										sDownloadUpdate.applicationContext = (MyApplication) getActivity()
+												.getApplicationContext();
+
+										sDownloadUpdate.execute(url,
+												theServerVersion);
+
+									} catch (Exception e) {
+										CharSequence text = "Couldn't download latest version , please try again later";
+										int duration = Toast.LENGTH_LONG;
+										Toast updateErrorToast = Toast
+												.makeText(
+														getActivity()
+																.getApplicationContext(),
+														text, duration);
+										updateErrorToast.show();
+										dialog.cancel();
+										Log.e("Error Downloading Latest Version: ",
+												e.getMessage(), e);
+									}
+
+								}
+							})
+					.setNegativeButton("No",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									dialog.cancel();
+								}
+							}).create();
+		}
+	}
+
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		onPause();
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.exit:
+			finish();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
 	}
 
 	public static class TabsAdapter extends FragmentPagerAdapter implements
