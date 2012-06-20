@@ -35,7 +35,7 @@ import com.actionbarsherlock.view.MenuItem;
 // TODO: Auto-generated Javadoc
 /**
  * The Class MainActivity.
- *
+ * 
  * @author Martin Kemp <martin.kemp@capgemini.com>
  * @version 1.1
  * @since 10/05/2012

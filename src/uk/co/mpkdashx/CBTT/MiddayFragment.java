@@ -2,6 +2,7 @@ package uk.co.mpkdashx.CBTT;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -54,15 +55,19 @@ public class MiddayFragment extends SherlockFragment {
 							}
 
 						} else {
+							Context _context = getActivity();
 							data = middaylistView.getItemAtPosition(pos)
 									.toString();
 							String[] split = data.split(":");
+							split[0] = split[0].replace("*", "");
+							split[1] = split[1].replace("*", "");
 							int H = Integer.parseInt(split[0]);
 							int M = Integer.parseInt(split[1]);
 							Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
 							i.putExtra(AlarmClock.EXTRA_HOUR, H);
 							i.putExtra(AlarmClock.EXTRA_MINUTES, M);
-							startActivity(i);
+							i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							_context.startActivity(i);
 							Log.v("clicked", data + " @ " + "pos " + pos
 									+ " set alarm for: " + data);
 						}

@@ -35,9 +35,13 @@ public class StartDownloadUpdate extends AsyncTask<String, Integer, String> {
 
 			InputStream input = new BufferedInputStream(url.openStream());
 
-			Uri.Builder b = Uri.parse(Environment.getExternalStorageDirectory() + "/download/"	+ "CapgeminiBusTimeTable_" + theServerVersion+ ".apk").buildUpon();
+			Uri.Builder b = Uri.parse(
+					Environment.getExternalStorageDirectory() + "/download/"
+							+ "CapgeminiBusTimeTable_" + theServerVersion
+							+ ".apk").buildUpon();
 
-			String file = b.build().toString();;
+			String file = b.build().toString();
+			;
 
 			OutputStream output = new FileOutputStream(file);
 
@@ -80,8 +84,7 @@ public class StartDownloadUpdate extends AsyncTask<String, Integer, String> {
 		super.onPostExecute(null);
 		MainActivity.mProgressDialog.dismiss();
 		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setDataAndType(
-				Uri.fromFile(new File(result)),
+		intent.setDataAndType(Uri.fromFile(new File(result)),
 				"application/vnd.android.package-archive");
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		applicationContext.startActivity(intent);
