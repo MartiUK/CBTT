@@ -5,7 +5,7 @@ import org.acra.annotation.*;
 
 import android.app.Application;
 
-@ReportsCrashes(formUri ="http://www.bugsense.com/api/acra?api_key=d71aad6d",  formKey="", mode = ReportingInteractionMode.TOAST, resToastText = R.string.crash_toast_text)
+@ReportsCrashes(formUri ="http://www.bugsense.com/api/acra?api_key=d71aad6d",  formKey="", mode = ReportingInteractionMode.TOAST, resToastText = R.string.crash_toast_text, logcatArguments = { "-t", "100", "-v", "long", "ActivityManager:I", "uk.co.mpkx.CBTT:D", "*:S" })
 public class MyApplication extends Application {
 
 	private static MyApplication app;
