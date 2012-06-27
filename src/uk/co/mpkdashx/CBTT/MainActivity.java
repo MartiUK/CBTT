@@ -5,14 +5,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
-
+import java.util.Calendar;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,11 +24,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.text.format.DateFormat;
 import android.util.Log;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
+import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -100,18 +106,17 @@ public class MainActivity extends SherlockFragmentActivity {
 				editor.putString("serverVersion", serverVersion.toString());
 				editor.commit();
 			} catch (Exception e) {
-				e.printStackTrace();
-				Log.e("Error Saving Server Version Name: ", e.getMessage(), e);
-			}
-			try {
-				versionName = getPackageManager().getPackageInfo(
-						getPackageName(), 0).versionName;
-			} catch (NameNotFoundException e) {
 				CharSequence text = "Couldn't get latest version info, please try again later";
 				int duration = Toast.LENGTH_LONG;
 				Toast updateErrorToast = Toast.makeText(
 						getApplicationContext(), text, duration);
 				updateErrorToast.show();
+				Log.e("Error Saving Server Version Name: ", e.getMessage(), e);
+			}
+			try {
+				versionName = getPackageManager().getPackageInfo(
+						getPackageName(), 0).versionName;
+			} catch (Exception e) {
 				Log.e("Error Getting Current Version Name: ", e.getMessage(), e);
 			}
 
@@ -200,6 +205,26 @@ public class MainActivity extends SherlockFragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case R.id.cancel_alarm:
+			
+			Context ctx = getApplicationContext();
+
+			Intent intent = new Intent(ctx, AlarmReceiver.class);
+
+			PendingIntent pIntent = PendingIntent.getBroadcast(ctx, 0, intent, 0);
+			
+			AlarmManager alarmManager = (AlarmManager) ctx.getSystemService(ALARM_SERVICE);
+			
+			alarmManager.cancel(pIntent);
+			
+			int duration = Toast.LENGTH_LONG;
+			Toast cancelAlarmToast = Toast
+					.makeText(ctx,
+							"Cancelled Alarm", duration);
+			cancelAlarmToast.show();
+			
+			return true;
+			
 		case R.id.exit:
 			finish();
 			return true;
@@ -292,4 +317,50 @@ public class MainActivity extends SherlockFragmentActivity {
 		}
 	}
 
+	public static class TimePickerFragment extends SherlockDialogFragment
+			implements TimePickerDialog.OnTimeSetListener {
+		int mH;
+		int mM;
+
+		static TimePickerFragment newInstance(int H, int M) {
+			TimePickerFragment f = new TimePickerFragment();
+
+			Bundle args = new Bundle();
+			args.putInt("H", H);
+			args.putInt("M", M);
+			f.setArguments(args);
+
+			return f;
+		}
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			mH = getArguments().getInt("H");
+			mM = getArguments().getInt("M");
+
+			return new TimePickerDialog(getActivity(), this, mH, mM,
+					DateFormat.is24HourFormat(getActivity()));
+		}
+
+		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+			Context ctx = getSherlockActivity().getApplicationContext();
+
+			Intent intent = new Intent(ctx, AlarmReceiver.class);
+
+			PendingIntent pIntent = PendingIntent.getBroadcast(ctx, 0, intent,
+					0);
+
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+			calendar.set(Calendar.MINUTE, minute);
+			calendar.set(Calendar.SECOND, 00);
+			AlarmManager alarmManager = (AlarmManager) getSherlockActivity()
+					.getSystemService(ALARM_SERVICE);
+			alarmManager.set(AlarmManager.RTC_WAKEUP,
+					calendar.getTimeInMillis(), pIntent);
+
+		}
+	}
 }

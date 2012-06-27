@@ -1,12 +1,12 @@
 package uk.co.mpkdashx.CBTT;
 
+import uk.co.mpkdashx.CBTT.MainActivity.TimePickerFragment;
+
 import com.actionbarsherlock.app.SherlockFragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.AlarmClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,7 +70,6 @@ public class MorningFragment extends SherlockFragment {
 							}
 
 						} else {
-							Context _context = getActivity();
 							data = morninglistView.getItemAtPosition(pos)
 									.toString();
 							String[] split = data.split(":");
@@ -78,18 +77,21 @@ public class MorningFragment extends SherlockFragment {
 							split[1] = split[1].replace("*", "");
 							int H = Integer.parseInt(split[0]);
 							int M = Integer.parseInt(split[1]);
-							Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
-							i.putExtra(AlarmClock.EXTRA_HOUR, H);
-							i.putExtra(AlarmClock.EXTRA_MINUTES, M);
-							i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-							_context.startActivity(i);
+							
+
+							new MainActivity.TimePickerFragment();
+							TimePickerFragment.newInstance(H, M).show(
+									getActivity().getSupportFragmentManager(),
+									"timePicker");
+
 							Log.v("clicked", data + " @ " + "pos " + pos
-									+ " set alarm for: " + data);
+									+ " went to TimePicker with data: " + data);
 						}
 						return false;
 
 					}
 				});
 		return morninglistView;
+
 	}
 }

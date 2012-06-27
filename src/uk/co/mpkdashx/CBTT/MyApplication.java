@@ -1,22 +1,18 @@
 package uk.co.mpkdashx.CBTT;
 
-import org.acra.*;
-import org.acra.annotation.*;
+import com.bugsense.trace.BugSenseHandler;
 
 import android.app.Application;
 
-@ReportsCrashes(formUri = "http://www.bugsense.com/api/acra?api_key=d71aad6d", formKey = "", mode = ReportingInteractionMode.TOAST, resToastText = R.string.crash_toast_text, logcatArguments = {
-		"-t", "100", "-v", "long", "ActivityManager:I", "uk.co.mpkx.CBTT:D",
-		"*:S" })
 public class MyApplication extends Application {
 
 	private static MyApplication app;
 
 	@Override
 	public void onCreate() {
-		// The folowing line triggers the initialization of ACRA
-		ACRA.init(this);
 		super.onCreate();
+		//BugSenseHandler.setup(this, "d71aad6d");
+
 	}
 
 	public static MyApplication getApp() {
