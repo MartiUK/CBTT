@@ -4,11 +4,9 @@ import uk.co.mpkdashx.CBTT.MainActivity.TimePickerFragment;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.AlarmClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
