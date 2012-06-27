@@ -11,7 +11,7 @@ public class MyApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		//BugSenseHandler.setup(this, "d71aad6d");
+		BugSenseHandler.setup(this, "d71aad6d");
 
 	}
 

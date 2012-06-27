@@ -112,15 +112,18 @@ public class MainActivity extends SherlockFragmentActivity {
 						getApplicationContext(), text, duration);
 				updateErrorToast.show();
 				Log.e("Error Saving Server Version Name: ", e.getMessage(), e);
+				return null;
 			}
 			try {
 				versionName = getPackageManager().getPackageInfo(
 						getPackageName(), 0).versionName;
 			} catch (Exception e) {
 				Log.e("Error Getting Current Version Name: ", e.getMessage(), e);
+				return null;
 			}
 
 			if (serverVersion.equals(versionName)) {
+				return null;
 			} else {
 				DialogFragment newFragment = UpdateDialog.newInstance(0);
 				newFragment.show(getSupportFragmentManager(), "title");
