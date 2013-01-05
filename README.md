@@ -18,8 +18,6 @@ CBTT uses [ActionBarSherlock][1] by Jake Wharton and the the latest Android supp
 
 Author
 ------
-Martin Kemp is a Capgemini employee who isn't afraid to try new things in his spare time and inbetween projects. He runs his personal [website][2] and occasionally likes to [blog][3].
+Martin Kemp
 
 [1]: https://github.com/JakeWharton/ActionBarSherlock "ActionBarSherlock"
-[2]: http://www.mpk-x.co.uk/    "website"
-[3]: http://www.mpk-x.co.uk/blog/   "blog"
