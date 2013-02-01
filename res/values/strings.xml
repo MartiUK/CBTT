@@ -2,8 +2,7 @@
 <resources>
 
 		<string name="app_name">Capgemini Bus TT</string>
-		<string name="startText">Thank you for using this app, this is my first app I\'ve made and I hope it\'ll help you out during your day to day business. \n
-				Please drop by and give me any suggestions, I\'m currently in the CCM team on the 1st floor. \n \n * Please note that the last afternoon service (Departing 18:25 from Capgemini) is only available Monday to Friday.</string>
+		<string name="startText">Thank you for using this app, this is my first app I\'ve made and I hope it\'ll help you out during your day to day business.\n * Please note that the last afternoon service (Departing 18:25 from Capgemini) is only available Monday to Friday.</string>
 		<string name="start">Start</string>
 		<string name="morning">Morning</string>
 		<string name="midday">Midday</string>
